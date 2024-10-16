@@ -1,0 +1,65 @@
+CREATE DATABASE lab5+;
+
+CREATE TABLE customers (
+    customer_id SERIAL PRIMARY KEY,
+    name VARCHAR(100),
+    city VARCHAR(100),
+    grade INT
+);
+
+CREATE TABLE orders (
+    order_id SERIAL PRIMARY KEY,
+    customer_id INT REFERENCES customers(customer_id),
+    purchase_amount DECIMAL(10, 2)
+);
+
+INSERT INTO customers (name, city, grade) VALUES
+('John Doe', 'New York', 85),
+('Alice Brown', 'Los Angeles', 90),
+('Bob Smith', 'New York', 75),
+('Linda B', 'Chicago', 95),
+('Mike Taylor', NULL, 80);
+
+INSERT INTO orders (customer_id, purchase_amount) VALUES
+(1, 150.50),
+(2, 200.00),
+(3, 300.75),
+(4, 50.25),
+(5, 100.00);
+
+SELECT SUM(purchase_amount) AS total_purchase_amount
+FROM orders;
+
+SELECT AVG(purchase_amount) AS average_purchase_amount
+FROM orders;
+
+SELECT COUNT(*) AS customers_with_names
+FROM customers
+WHERE name IS NOT NULL AND name != '';
+
+SELECT MIN(purchase_amount) AS minimum_purchase_amount
+FROM orders;
+
+SELECT *
+FROM customers
+WHERE name LIKE '%b';
+
+SELECT o.*
+FROM orders o
+JOIN customers c ON o.customer_id = c.customer_id
+WHERE c.city = 'New York';
+
+SELECT DISTINCT c.*
+FROM customers c
+JOIN orders o ON c.customer_id = o.customer_id
+WHERE o.purchase_amount > 10;
+
+SELECT SUM(grade) AS total_customer_grade
+FROM customers;
+
+SELECT *
+FROM customers
+WHERE name IS NOT NULL AND name != '';
+
+SELECT MAX(grade) AS maximum_customer_grade
+FROM customers;
